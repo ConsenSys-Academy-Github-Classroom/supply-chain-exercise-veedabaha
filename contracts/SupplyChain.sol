@@ -1,5 +1,5 @@
 
-pragma solidity >=0.8.7 <0.9.0;
+pragma solidity >=0.5.16 <0.9.0;
 
 contract SupplyChain {
 
@@ -99,7 +99,7 @@ contract SupplyChain {
        _;
    } 
 
-  constructor() {
+  constructor() public{
     // 1. Set the owner to the transaction sender
     owner= msg.sender;
     // 2. Initialize the sku count to 0. Question, is this necessary?
@@ -117,8 +117,8 @@ contract SupplyChain {
      sku: skuCount, 
      price: _price, 
      state: State.ForSale, 
-     seller: payable(msg.sender), 
-     buyer:payable(address(0))
+     seller:(msg.sender), 
+     buyer:(address(0))
     });
    
     //
@@ -139,7 +139,7 @@ contract SupplyChain {
   //      sure the buyer is refunded any excess ether sent. 
   // 6. call the event associated with this function!
   function buyItem(uint sku) public payable forSale(sku) paidEnough(items[sku].price) checkValue(sku) {
-     items[sku].buyer = payable( msg.sender) ;
+     items[sku].buyer = ( msg.sender) ;
      items[sku].state=State.Sold;
      items[sku].seller.transfer(items[sku].price);
     emit LogSold(sku);
